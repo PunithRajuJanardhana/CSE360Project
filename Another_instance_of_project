@@ -1,4 +1,4 @@
-package asuHelloWorldJavaFX;
+package HW1;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Random;
 
-public class ASUHelloWorldJavaFX extends Application {
+public class HW1 extends Application {
 	
 
 	int something = 0;
@@ -46,6 +46,12 @@ public class ASUHelloWorldJavaFX extends Application {
 	
 	private Stage stage;
 	
+	private Scene Immunorecords;
+	
+	private Scene healthistory;
+	
+	
+	
 	private Scene Homepage;
 	private Pane pane1;
 	private Button PatientIntake;
@@ -53,11 +59,41 @@ public class ASUHelloWorldJavaFX extends Application {
     private Button PatientUI;
     private TextField Dverification;
     private TextField VERIFY;
+    private Text chooseuser;
+    private TextField inputusername;
+    private TextField inputpassword;
+    private Text Username;
+    private Text Password;
+    private RadioButton Patient;
+	private RadioButton OfficeStaff;
+	private Button Loginbutton;
     private Label Error3;
     //private Button DoctorUI;
     private Text Hearthealth;
     private Rectangle whitebox;
 	
+    
+    private Scene Officestaffview;
+    private Pane pane5;
+    private Text welcomestaff;
+    private Button immunorecords;
+    private Button patientinformation;
+    private Button pastvisits;
+    private Button messagepatient;
+    private Button contactpharamacy;
+    private Button vitals;
+    private Button doctorevaluation;
+    private Button backbutton;
+    
+    
+    private Scene Patientinterface;
+    private Pane pane6;
+    private Text welcomepatient;
+    
+    private Button backbutton2;
+    
+    
+    
     // Patient intake form
 	private Scene Patientform;
 	private Pane pane2;
@@ -241,6 +277,9 @@ public class ASUHelloWorldJavaFX extends Application {
 		Patientform = createScenePatientform();
 		CTtechview = createSceneCTtechview();
 		Patientview = createScenePatientview();
+		Patientinterface = createScenePatientinterface();
+		Officestaffview = createSceneOfficestaffview();
+		
 		// Doctorview = createSceneDoctorview();
 		// messagedoctorscene = createScenemessagedoctor();
 		
@@ -250,6 +289,121 @@ public class ASUHelloWorldJavaFX extends Application {
 		
 	}
 	
+	private Scene createScenePatientinterface() {
+		
+		Rectangle whitebox = new Rectangle(750, 450);
+	       whitebox.setFill(Color.TRANSPARENT);
+	       whitebox.setStroke(Color.WHITE);
+	       whitebox.setStrokeWidth(2);
+	       whitebox.setLayoutX(25);
+	       whitebox.setLayoutY(25);
+	       
+		pane6 = new Pane(whitebox);
+	    pane6.setStyle("-fx-background-color: black;");
+	    pane6.setPrefSize(800, 500);
+	      
+	    Patientinterface = new Scene(pane6);
+		
+	    return Patientinterface;
+	}
+	
+	//private Text welcomestaff;
+    //private Button immunorecords;
+    //private Button pastvisits;
+    //private Button messagepatient;
+    //private Button contactpharamacy;
+    //private Button vitals;
+    //private Button doctorevaluation;
+    //private Button backbutton;
+    
+	private Scene createSceneOfficestaffview() {
+		welcomestaff = new Text("Welcome Doctor's office staff");
+		welcomestaff.setLayoutX(300);
+		welcomestaff.setLayoutY(50);
+		welcomestaff.setFill(Color.WHITE);
+		welcomestaff.setFont(Font.font("Arial", 17));
+		
+		backbutton = new Button("Back");
+		backbutton.setStyle("-fx-background-color: grey; -fx-text-fill: white;");
+		backbutton.setFont(Font.font("Arial", 17));
+		backbutton.setPrefWidth(100);
+		backbutton.setPrefHeight(25);
+		backbutton.setLayoutX(35);
+		backbutton.setLayoutY(420);
+		backbutton.setOnAction(e -> switchScenes(Homepage));
+		
+		Rectangle whitebox = new Rectangle(750, 450);
+	    whitebox.setFill(Color.TRANSPARENT);
+	    whitebox.setStroke(Color.WHITE);
+	    whitebox.setStrokeWidth(2);
+	    whitebox.setLayoutX(25);
+	    whitebox.setLayoutY(25);
+	    
+	    immunorecords = new Button("View patient immunization records");
+	    immunorecords.setPrefWidth(300);
+	    immunorecords.setPrefHeight(50);
+	    immunorecords.setLayoutX(100);
+	    immunorecords.setLayoutY(100);
+	    immunorecords.setStyle("-fx-background-color: grey; -fx-text-fill: white;");
+	    immunorecords.setFont(Font.font("Arial", 17));
+	    
+	    pastvisits = new Button("View patient's past visits");
+	    pastvisits.setPrefWidth(300);
+	    pastvisits.setPrefHeight(50);
+	    pastvisits.setLayoutX(100);
+	    pastvisits.setLayoutY(175);
+	    pastvisits.setStyle("-fx-background-color: grey; -fx-text-fill: white;");
+	    pastvisits.setFont(Font.font("Arial", 17));
+	    
+	    messagepatient = new Button("Message patient");
+	    messagepatient.setPrefWidth(300);
+	    messagepatient.setPrefHeight(50);
+	    messagepatient.setLayoutX(100);
+	    messagepatient.setLayoutY(250);
+	    messagepatient.setStyle("-fx-background-color: grey; -fx-text-fill: white;");
+	    messagepatient.setFont(Font.font("Arial", 17));
+	    
+	    contactpharamacy = new Button("Message pharamacy");
+	    contactpharamacy.setPrefWidth(300);
+	    contactpharamacy.setPrefHeight(50);
+	    contactpharamacy.setLayoutX(425);
+	    contactpharamacy.setLayoutY(100);
+	    contactpharamacy.setStyle("-fx-background-color: grey; -fx-text-fill: white;");
+	    contactpharamacy.setFont(Font.font("Arial", 17));
+	       
+	    vitals = new Button("Patient vitals");
+	    vitals.setPrefWidth(300);
+	    vitals.setPrefHeight(50);
+	    vitals.setLayoutX(425);
+	    vitals.setLayoutY(175);
+	    vitals.setStyle("-fx-background-color: grey; -fx-text-fill: white;");
+	    vitals.setFont(Font.font("Arial", 17));
+	    
+	    doctorevaluation = new Button("Docotr's evalutation");
+	    doctorevaluation.setPrefWidth(300);
+	    doctorevaluation.setPrefHeight(50);
+	    doctorevaluation.setLayoutX(425);
+	    doctorevaluation.setLayoutY(250);
+	    doctorevaluation.setStyle("-fx-background-color: grey; -fx-text-fill: white;");
+	    doctorevaluation.setFont(Font.font("Arial", 17));
+	    
+	    patientinformation = new Button("New patient");
+	    patientinformation.setPrefWidth(300);
+	    patientinformation.setPrefHeight(50);
+	    patientinformation.setLayoutX(250);
+	    patientinformation.setLayoutY(325);
+	    patientinformation.setStyle("-fx-background-color: grey; -fx-text-fill: white;");
+	    patientinformation.setFont(Font.font("Arial", 17));
+	    
+		pane5 = new Pane(whitebox, welcomestaff, immunorecords, pastvisits, messagepatient, contactpharamacy, vitals, doctorevaluation, patientinformation, backbutton);
+	    pane5.setStyle("-fx-background-color: black;");
+	    pane5.setPrefSize(800, 500);
+	      
+	    Officestaffview = new Scene(pane5);
+		
+	    return Officestaffview;
+	}
+	
 	private Scene createSceneHomepage() {
 	      
 		   Hearthealth = new Text("Welcome to Heart Health Imaging and Recording Systems");
@@ -257,13 +411,106 @@ public class ASUHelloWorldJavaFX extends Application {
 	       Hearthealth.setLayoutY(50);
 	       Hearthealth.setFill(Color.WHITE);
 	       Hearthealth.setFont(Font.font("Arial", 17));
-			
+	   	
+	   	   chooseuser = new Text("Please select who you are and fill out the fields");
+	   	   chooseuser.setLayoutX(200);
+	   	   chooseuser.setLayoutY(100);
+	   	   chooseuser.setFill(Color.WHITE);
+	   	   chooseuser.setFont(Font.font("Arial", 17));
+	       
+	   	   Patient = new RadioButton("Patient");
+	   	   Patient.setLayoutX(175);
+	   	   Patient.setLayoutY(125);
+	   	   Patient.setTextFill(Color.WHITE);
+	   	   Patient.setFont(Font.font("Arial", 17));
+	   	   
+	   	   OfficeStaff = new RadioButton("Office Staff");
+	   	   OfficeStaff.setLayoutX(175);
+	   	   OfficeStaff.setLayoutY(175);
+	   	   OfficeStaff.setTextFill(Color.WHITE);
+	   	   OfficeStaff.setFont(Font.font("Arial", 17));
+	   	   
+	   	   ToggleGroup userselection = new ToggleGroup();
+	   	   
+	   	   Patient.setToggleGroup(userselection);
+	   	   OfficeStaff.setToggleGroup(userselection);
+	   	   
+	   	   Username = new Text("Username: ");
+	   	   Username.setLayoutX(175);
+	   	   Username.setLayoutY(250);
+	   	   Username.setFill(Color.WHITE);
+	   	   Username.setFont(Font.font("Arial", 17));
+	   	   
+	   	   Password = new Text("Password: ");
+	   	   Password.setLayoutX(175);
+	   	   Password.setLayoutY(300);
+	   	   Password.setFill(Color.WHITE);
+	   	   Password.setFont(Font.font("Arial", 17));
+	   	   
+	   	   inputusername = new TextField();
+	   	   inputusername.setLayoutX(275);
+	   	   inputusername.setLayoutY(230);
+	   	   inputusername.setFont(Font.font("Arial", 17));
+	   	   
+	   	   inputpassword = new TextField();
+	   	   inputpassword.setLayoutX(275);
+	   	   inputpassword.setLayoutY(280);
+	   	   inputpassword.setFont(Font.font("Arial", 17));
+	   	   
+	   	   Loginbutton = new Button("Login");
+	   	   Loginbutton.setLayoutX(170);
+	   	   Loginbutton.setLayoutY(350);
+	   	   Loginbutton.setFont(Font.font("Arial", 17));
+	   	   
+	   	Loginbutton.setOnAction(new EventHandler<>() {
+            public void handle(ActionEvent event) {
+            	if(Patient.isSelected()) {
+            		
+            		String enteredUsername = inputusername.getText();
+                    String enteredPassword = inputpassword.getText();
+
+                    // Dummy validation logic (replace this with actual validation logic)
+
+                    if (enteredUsername.equals("Jimmyisnum1") && enteredPassword.equals("Hiddenpassword")) {
+                        // If credentials are valid, open the Doctor class popup
+                    	Error3.setText("");
+                    	switchScenes(Patientinterface);
+                    } else {
+                        
+                    	Error3.setText("User is not found");
+                        
+                    }
+            	}
+            	
+            	if(OfficeStaff.isSelected()) {
+            		
+            		String enteredUsername = inputusername.getText();
+                    String enteredPassword = inputpassword.getText();
+
+                    // Dummy validation logic (replace this with actual validation logic)
+
+                    if (enteredUsername.equals("Doctorjeff") && enteredPassword.equals("Knownpassword")) {
+                        // If credentials are valid, open the Doctor class popup
+                    	Error3.setText("");
+                    	switchScenes(Officestaffview);
+                        
+                    } else {
+                        
+                    	Error3.setText("User is not found");
+                        
+                    }
+            	}
+            }
+	   	});
+	   	
+	       /*
 	       PatientIntake = new Button("Patient Intake");
 	       PatientIntake.setPrefSize(250, 75);
 	       PatientIntake.setLayoutX(275);
 	       PatientIntake.setLayoutY(100);
 	       PatientIntake.setStyle("-fx-background-color: #4473c5");
 	       PatientIntake.setOnAction(e -> switchScenes(Patientform));
+	       */
 	       
 	       Rectangle whitebox = new Rectangle(750, 450);
 	       whitebox.setFill(Color.TRANSPARENT);
@@ -272,19 +519,23 @@ public class ASUHelloWorldJavaFX extends Application {
 	       whitebox.setLayoutX(25);
 	       whitebox.setLayoutY(25);
 			
+	       /*
 	       CTScan = new Button("CT Scan Tech View");
 	       CTScan.setPrefSize(250, 75);
 	       CTScan.setLayoutX(275);
 	       CTScan.setLayoutY(200);
 	       CTScan.setStyle("-fx-background-color: #4473c5");
 	       CTScan.setOnAction(e -> switchScenes(CTtechview));
-			
+			*/
+	       
+	       /*
 	       VERIFY = new TextField();
 	       VERIFY.setLayoutX(275);
 	       VERIFY.setLayoutY(400);
 	       VERIFY.prefWidth(300);
 	       VERIFY.prefHeight(100);
-	       
+	       */
+	       /*
 	       PatientUI = new Button("Patient View: Enter patient ID below");
 	       PatientUI.setPrefSize(250, 75);
 	       PatientUI.setLayoutX(275);
@@ -310,10 +561,12 @@ public class ASUHelloWorldJavaFX extends Application {
 	            	}
 	            }
 			});
-	   
+	   		*/
 	       Error3 = new Label("");
-	       Error3.setLayoutX(275);
-	       Error3.setLayoutY(435);
+	       Error3.setLayoutX(235);
+	       Error3.setLayoutY(350);
+	       Error3.setTextFill(Color.WHITE);
+	       Error3.setFont(Font.font("Arial", 17));
 	       /*
 	       DoctorUI = new Button("Doctor View");
 	       DoctorUI.setPrefSize(250, 75);
@@ -322,7 +575,8 @@ public class ASUHelloWorldJavaFX extends Application {
 	       DoctorUI.setStyle("-fx-background-color: #4473c5");
 	       DoctorUI.setOnAction(e -> switchScenes(Doctorview));
 			*/
-	       pane1 = new Pane(whitebox, Hearthealth, PatientIntake, CTScan, PatientUI, Error3, VERIFY);
+	   	
+	       pane1 = new Pane(whitebox, Hearthealth, Error3, chooseuser, Username, Password, Patient, OfficeStaff, Loginbutton, inputusername, inputpassword);
 	       pane1.setStyle("-fx-background-color: black;");
 	       pane1.setPrefSize(800, 500);
 	      
