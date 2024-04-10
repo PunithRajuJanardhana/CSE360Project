@@ -1,176 +1,186 @@
-package asuHelloWorldJavaFX;
+package HW1;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
-public class Patient extends Application {
+public class Patient {
+	    private String id;
+	    private String fname;
+	    private String lname;
+	    private String phoneNumber,healthHistory,insuranceID,pharmacy;
+	    
+	    private int totalCAC;
+	    private int lmValue;
+	    private int ladValue;
+	    private int lcxValue;
+	    private int rdaValue;
+	    private int pdaValue;
+		private String bday;
+		private String Dnotes;
 
-    // Text displaying patient information
-    private Text patientInfoText;
-    private TextArea editTextArea;
-    private Button backButton;
-    private Button doneButton;
-    private boolean editMode = false;
+	    public Patient() {
+	        // Default constructor
+	    	this.id = "";
+	    	this.fname = "";
+	    	this.lname = "";
+	    	this.bday = "";
+	    	this.phoneNumber = "";
+	    	this.healthHistory = "";
+	    	this.insuranceID = "";
+	    	this.pharmacy = "";
+	        this.totalCAC = 0;
+	        this.lmValue = 0;
+	        this.ladValue = 0;
+	        this.lcxValue = 0;
+	        this.rdaValue = 0;
+	        this.pdaValue = 0;
+	        this.Dnotes = "";
+	    }
 
-    @Override
-    public void start(Stage primaryStage) {
-        // Creating a stack pane to hold our elements
-        StackPane root = new StackPane();
+	    public Patient( String Dnotes, String fname, String lname, String bday, String phoneNumber, String healthHistory,String insuranceID,String pharmacy, int totalCAC, int lmValue, int ladValue, int lcxValue, int rdaValue, int pdaValue) {
+	       
+	    	this.fname = fname;
+	    	this.lname = lname;
+	    	this.bday = bday;
+	    	this.phoneNumber = phoneNumber;
+	    	this.healthHistory = healthHistory;
+	    	this.insuranceID = insuranceID;
+	    	this.pharmacy = pharmacy;
+	        this.totalCAC = totalCAC;
+	        this.lmValue = lmValue;
+	        this.ladValue = ladValue;
+	        this.lcxValue = lcxValue;
+	        this.rdaValue = rdaValue;
+	        this.pdaValue = pdaValue;
+	        this.Dnotes = Dnotes;
+	    }
 
-        // Setting the background color to dark blue with gradient
-        root.setStyle("-fx-background-color: linear-gradient(to bottom, #265B78, #0D1C2B);");
+	    // Getters and setters
+	    
+	    public String getID() {
+	        return id;
+	    }
 
-        // Creating a black box with a white border
-        double screenWidth = 700; // Adjust this according to your screen size
-        double screenHeight = 700; // Adjust this according to your screen size
-        double boxWidth = screenWidth * 0.75; // 75% of the screen width
-        double boxHeight = 550; // Increased height for the black box
-        Rectangle blackBox = new Rectangle(boxWidth, boxHeight);
-        blackBox.setFill(Color.BLACK);
-        blackBox.setStroke(Color.WHITE);
-        blackBox.setStrokeWidth(1); // Very thin white border
+	    public void setID(String id) {
+	        this.id = id;
+	    }
 
-        // Adding the black box to the stack pane
-        root.getChildren().add(blackBox);
+	    public String getFirstName() {
+	        return fname;
+	    }
 
-        // Initialize patient information text
-        patientInfoText = new Text("Patient Information:\n\nFirst Name: John\n\nLast Name: Doe\n\nContact Information: 123-456-7890\n\nInsurance: XYZ Insurance\n\nPharmacy: ABC Pharmacy");
-        patientInfoText.setFill(Color.WHITE);
-        patientInfoText.setFont(Font.font("Arial", 20));
+	    public void setFirstName(String fname) {
+	        this.fname = fname;
+	    }
+	    
+	    public String getLastName() {
+	        return lname;
+	    }
+	    
+	    
 
-        // Positioning the patient information text within the black box
-        StackPane.setAlignment(patientInfoText, javafx.geometry.Pos.CENTER);
-        patientInfoText.setTranslateX(-100); // Adjust the X position as needed (positive for right, negative for left)
-        patientInfoText.setTranslateY(-145); // Adjust the Y position as needed
+	    public void setLastName(String lname) {
+	        this.lname = lname;
+	    }
+	    
+	    public String getBirthDay() {
+	    	return bday;
+	    }
+	    public void setBirthDay(String bday) {
+	    	this.bday = bday;
+	    }
+	    
+	    
+	    
+	    public String getPhoneNumber() {
+	        return phoneNumber;
+	    }
 
-        // Adding the patient information text to the stack pane
-        root.getChildren().add(patientInfoText);
+	    public void setPhoneNumber(String phoneNumber) {
+	        this.phoneNumber = phoneNumber;
+	    }
 
-        // Creating a line gap after the patient information
-        Text lineGap = new Text("\n");
-        root.getChildren().add(lineGap);
+	    // Getter and setter for healthHistory
+	    public String getHealthHistory() {
+	        return healthHistory;
+	    }
 
-        // Creating an edit text area for editing patient information
-        editTextArea = new TextArea();
-        editTextArea.setPrefSize(boxWidth * 0.7, boxHeight * 0.7); // 70% of box width and height
-        editTextArea.setVisible(false); // Initially hidden
+	    public void setHealthHistory(String healthHistory) {
+	        this.healthHistory = healthHistory;
+	    }
 
-        // Positioning the edit text area within the black box
-        StackPane.setAlignment(editTextArea, javafx.geometry.Pos.CENTER);
+	    // Getter and setter for insuranceID
+	    public String getInsuranceID() {
+	        return insuranceID;
+	    }
 
-        // Adding the edit text area to the stack pane
-        root.getChildren().add(editTextArea);
+	    public void setInsuranceID(String insuranceID) {
+	        this.insuranceID = insuranceID;
+	    }
 
-        // Creating a done button
-        doneButton = new Button("Done");
-        doneButton.setStyle("-fx-background-color: #333333; -fx-text-fill: white; -fx-font-size: 14px;"); // Styling the button
+	    // Getter and setter for pharmacy
+	    public String getPharmacy() {
+	        return pharmacy;
+	    }
 
-        // Positioning the done button at the bottom of the page
-        doneButton.setTranslateY((screenHeight / 2 - boxHeight / 2) + 260); // Adjust the Y position as needed
-        doneButton.setVisible(false); // Initially hidden
+	    public void setPharmacy(String pharmacy) {
+	        this.pharmacy = pharmacy;
+	    }
 
-        // Adding event handler for the done button
-        doneButton.setOnAction(event -> {
-            // Update patient information text with edited information
-            String editedText = editTextArea.getText();
-            patientInfoText.setText("Patient Information:\n\n" + editedText);
-            
-            // Hide edit text area and show patient information text
-            editTextArea.setVisible(false);
-            patientInfoText.setVisible(true);
-            
-            // Show back button
-            backButton.setVisible(true);
-            
-            // Hide done button
-            doneButton.setVisible(false);
-            
-            // Toggle edit mode off
-            editMode = false;
-        });
+	    public int getTotalCAC() {
+	        return totalCAC;
+	    }
 
-        // Adding the done button to the stack pane
-        root.getChildren().add(doneButton);
+	    public void setTotalCAC(int totalCAC) {
+	        this.totalCAC = totalCAC;
+	    }
 
-        // Creating a back button
-        backButton = new Button("Back");
-        backButton.setStyle("-fx-background-color: #333333; -fx-text-fill: white; -fx-font-size: 14px;"); // Styling the button
+	    public int getLmValue() {
+	        return lmValue;
+	    }
 
-        // Positioning the back button at the top left corner
-        backButton.setTranslateX(-(screenWidth / 2 - boxWidth / 2) + -235); // Adjust the X position as needed
-        backButton.setTranslateY(-(screenHeight / 2 - boxHeight / 2) + -260); // Adjust the Y position as needed
-        backButton.setVisible(false); // Initially hidden
+	    public void setLmValue(int lmValue) {
+	        this.lmValue = lmValue;
+	    }
 
-        // Adding event handler for the back button
-        backButton.setOnAction(event -> {
-            if (editMode) {
-                // Show patient information text and hide edit text area
-                patientInfoText.setVisible(true);
-                editTextArea.setVisible(false);
-                // Show back button
-                backButton.setVisible(true);
-                // Hide done button
-                doneButton.setVisible(false);
-                // Toggle edit mode off
-                editMode = false;
-            }
-        });
+	    public int getLadValue() {
+	        return ladValue;
+	    }
 
-        // Adding the back button to the stack pane
-        root.getChildren().add(backButton);
+	    public void setLadValue(int ladValue) {
+	        this.ladValue = ladValue;
+	    }
 
-        // Creating an edit button
-        Button editButton = new Button("Edit");
-        editButton.setStyle("-fx-background-color: #333333; -fx-text-fill: white; -fx-font-size: 14px;"); // Styling the button
+	    public int getLcxValue() {
+	        return lcxValue;
+	    }
 
-        // Positioning the edit button at the bottom of the page
-        editButton.setTranslateY((screenHeight / 2 - boxHeight / 2) + 260); // Adjust the Y position as needed
+	    public void setLcxValue(int lcxValue) {
+	        this.lcxValue = lcxValue;
+	    }
 
-        // Adding event handler for the edit button
-        editButton.setOnAction(event -> {
-            // Toggle edit mode
-            editMode = !editMode;
-            if (editMode) {
-                // Show edit text area and hide patient information text
-                editTextArea.setText(patientInfoText.getText());
-                editTextArea.setVisible(true);
-                patientInfoText.setVisible(false);
-                // Hide back button
-                backButton.setVisible(false);
-                // Show done button
-                doneButton.setVisible(true);
-            } else {
-                // Show patient information text and hide edit text area
-                patientInfoText.setVisible(true);
-                editTextArea.setVisible(false);
-                // Show back button
-                backButton.setVisible(true);
-                // Hide done button
-                doneButton.setVisible(false);
-            }
-        });
+	    public int getRdaValue() {
+	        return rdaValue;
+	    }
 
-        // Adding the edit button to the stack pane
-        root.getChildren().add(editButton);
+	    public void setRdaValue(int rdaValue) {
+	        this.rdaValue = rdaValue;
+	    }
 
-        // Creating a scene with the specified dimensions and adding the stack pane to it
-        Scene scene = new Scene(root, screenWidth, screenHeight);
+	    public int getPdaValue() {
+	        return pdaValue;
+	    }
 
-        // Setting the scene to the stage and displaying the stage
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Dark Blue Background with Black Box (With Patient Information)");
-        primaryStage.show();
-    }
+	    public void setPdaValue(int pdaValue) {
+	        this.pdaValue = pdaValue;
+	    }
+	    
+	    public String getDoctornotes() {
+	        return Dnotes;
+	    }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+	    public void setDoctornotes(String Dnotes) {
+	        this.Dnotes = Dnotes;
+	    }
+	    
+   
+
 }

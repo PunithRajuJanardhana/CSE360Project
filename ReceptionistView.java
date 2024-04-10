@@ -1,184 +1,234 @@
-package asuHelloWorldJavaFX;
+package HW1;
 
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Random;
-import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
-import javafx.scene.control.DatePicker;
 
-public class ReceptionistView {
-    public static ArrayList<LocalDate> reservedDates = new ArrayList<>(); 
-    public static ArrayList<Integer> patientIds = new ArrayList<>();
+
+public class ReceptionistView extends Application {
+
+    private Label lastPatientIdLabel = new Label(""); // Label to display the last generated patient ID
+    
+
+    public static ArrayList<String> patiendIDs = new ArrayList<>();
     public static ArrayList<Patient> patientList = new ArrayList<>();
-    LocalDate selectedDate;
-    Patient a;
-    int year,month,day;
-    TextField nameTextField = new TextField();
-    TextField lastNameTextField = new TextField();
-    TextField addressTextField = new TextField();
-    TextField phoneTextField = new TextField();
-    TextField insuranceIdTextField = new TextField(); 
-    DatePicker datePicker = new DatePicker();
-    Label result;
-    Label successLabel = new Label();
-    String firstName,lastName,address,phone,insur;
+    private static Patient a;
+    private static int b;
+    
+
+    private static TextField firstNameTextField,lastNameTextField,birthDayField, pharmacyName
+    ,phoneTextField,healthHistoryTextField,insuranceIDTextField;
 
 
+    public void start(Stage primaryStage, Patient obj) {
+    	if(obj ==null) {
+    		a = new Patient();
+    		b = 1;
+    	}
+    	else {
+    		a = obj;
+    		b = 0;
+    	}
+        VBox vbox = new VBox(10);
+        vbox.setAlignment(Pos.TOP_CENTER);
+        vbox.setPadding(new Insets(20, 50, 20, 50));
 
-    public static int patientID;
+        Label titleLabel = new Label("Patient Intake Form");
+        titleLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
 
-    public void addToPane(BorderPane pane) {
-        Label intakeFormLabel = new Label("Patient Intake Form");
-        intakeFormLabel.setFont(Font.font("Arial", 20));
-        successLabel.setPrefWidth(450);
-        successLabel.setFont(Font.font("Arial", 14));
+        // Create and configure the grid pane for form inputs
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setVgap(10);
+        grid.setHgap(20);
+        grid.setPadding(new Insets(20, 20, 20, 20));
 
-        GridPane gridPane = new GridPane();
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
+        // Form fields
+        firstNameTextField = new TextField();
+        lastNameTextField = new TextField();
+        birthDayField = new TextField();
+        pharmacyName = new TextField();
+         phoneTextField = new TextField();
+         healthHistoryTextField = new TextField();
+         insuranceIDTextField = new TextField();
 
-        gridPane.add(intakeFormLabel, 0, 0, 2, 1);
-        gridPane.add(new Label("Name:"), 0, 1);
-        gridPane.add(nameTextField, 1, 1);
-        gridPane.add(new Label("Last Name:"), 0, 2);
-        gridPane.add(lastNameTextField, 1, 2);
-        gridPane.add(new Label("Address:"), 0, 3);
-        gridPane.add(addressTextField, 1, 3);
-        gridPane.add(new Label("Phone Number:"), 0, 4);
-        gridPane.add(phoneTextField, 1, 4);
-        gridPane.add(new Label("Insurance ID:"), 0, 5);
-        gridPane.add(insuranceIdTextField, 1, 5);
-        gridPane.add(new Label("Appointment Date:"), 0, 6);
-        gridPane.add(datePicker, 1, 6);
+        // Populate the grid with labels and corresponding text fields
+        grid.add(new Label("First Name:"), 0, 0);
+        grid.add(firstNameTextField, 1, 0);
+        grid.add(new Label("Last Name:"), 0, 1);
+        grid.add(lastNameTextField, 1, 1);
+        grid.add(new Label("BirthDay:"), 0, 2);
+        grid.add(birthDayField, 1, 2);
+        grid.add(new Label("Phone Number:"), 0, 3);
+        grid.add(phoneTextField, 1, 3);
+        grid.add(new Label("Health History:"), 0, 4);
+        grid.add(healthHistoryTextField, 1, 4);
+        grid.add(new Label("Insurance ID:"), 0, 5);
+        grid.add(insuranceIDTextField, 1, 5);
+        grid.add(new Label("Pharmacy: "), 0, 6);
+        grid.add(pharmacyName, 1, 6);
 
 
+        // Create the save button with an event handler to save patient data and update the patient ID label
         Button saveButton = new Button("Save");
-        saveButton.setStyle("-fx-background-color: #4473c5; -fx-min-width: 120px; -fx-min-height: 40px;");
-        saveButton.setOnAction(event -> {
-            if (areFieldsEmpty()) {
-                successLabel.setText("Error: Please fill in all fields.");
+        saveButton.setStyle("-fx-background-color: #0000FF; -fx-text-fill: white;");
+        saveButton.setMinWidth(100);
+        
+        saveButton.setOnAction(e -> {
+            String patientID;
+            if (b == 1) {
+                patientID = generatePatientID();
+                savePatientData(patientID,firstNameTextField.getText(),
+                		lastNameTextField.getText(),birthDayField.getText(),
+                		phoneTextField.getText(),healthHistoryTextField.getText(),
+                		insuranceIDTextField.getText(),pharmacyName.getText());
+                lastPatientIdLabel.setText("Account created successfully. Patient id: "+ patientID);
             } else {
-                savePatientInfo();
-            }
-        });
-
-        Button backButton = new Button("Back");
-        backButton.setStyle("-fx-background-color: #4473c5; -fx-min-width: 120px; -fx-min-height: 40px;");
-        backButton.setOnAction(event -> ASUHelloWorldJavaFX.showInitialView());
-
-        gridPane.add(saveButton, 0, 7);
-        gridPane.add(backButton, 1, 7);
-        
-        gridPane.add(successLabel, 0, 9, 2, 1);
-
-        // Add the gridPane to the center of the provided BorderPane
-        pane.setCenter(gridPane);
-        
-        datePicker.setOnAction(event -> {
-            LocalDate selectedDate = datePicker.getValue();
-            if (selectedDate != null) {
-            	if(!reservedDates.contains(selectedDate)){
-            		reservedDates.add(selectedDate);
-                 year = selectedDate.getYear();
-                 month = selectedDate.getMonthValue();
-                 day = selectedDate.getDayOfMonth();
-            	}
-            	else {
-            		System.out.println("Date is already reserved. Please pick another date");
-                	
-            	}
-            }
+                patientID = a.getID();
             
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(patientID + "_PatientInfo.txt"))) {
+                writer.write("Patient ID: " + patientID + "\n");
+                writer.write("First Name: " + firstNameTextField.getText() + "\n");
+                writer.write("Last Name: " + lastNameTextField.getText() + "\n");
+                writer.write("Birthday: " + birthDayField.getText() + "\n");
+                writer.write("Phone: " + phoneTextField.getText() + "\n");
+                writer.write("Health History: " + healthHistoryTextField.getText() + "\n");
+                writer.write("Insurance ID: " + insuranceIDTextField.getText() + "\n");
+                writer.write("Pharmacy: " + pharmacyName.getText() + "\n");
+
+
+                lastPatientIdLabel.setText("Information Saved Successfully");
+            } catch (IOException ex) {
+                showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while saving the data.");
+                ex.printStackTrace();
+            }
+            }
+           
         });
-        // Disable dates that have already been picked
-        datePicker.setDayCellFactory(picker -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-                setDisable(reservedDates.contains(date));
+        
+        Button backButton = new Button("Back");
+        backButton.setStyle("-fx-background-color: #0000FF; -fx-text-fill: white;");
+        backButton.setMinWidth(100);
+        backButton.setOnAction(event -> {
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            HW1 mainApp = new HW1();
+            try {
+                mainApp.start(stage); // Call the start method of ASUHelloWorldJavaFX with the existing stage
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
-        clearFields();
+
+        // Initialize the label for displaying the last generated patient ID
+        lastPatientIdLabel.setStyle("-fx-font-size: 14px;");
+
+        vbox.getChildren().addAll(titleLabel, grid, saveButton, backButton,lastPatientIdLabel);
+        Scene scene = new Scene(vbox, 600, 500);
+               
+        
+       
+
+        
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Patient Intake Form");
+        primaryStage.show();
     }
 
-    private void savePatientInfo() {
-         firstName = nameTextField.getText().trim();
-        a = new Patient();
-        a.setpatientName(firstName);
-
-         lastName  = lastNameTextField.getText().trim();
-         address   = addressTextField.getText().trim();
-         phone     = phoneTextField.getText().trim();
-         insur     = insuranceIdTextField.getText().trim();
-        if (firstName.isEmpty() || lastName.isEmpty() || address.isEmpty() || phone.isEmpty() || insur.isEmpty() || datePicker.getValue()==null) {
-        	successLabel.setText("Error: Please fill in all fields.");
-            clearFields();
-            return;
-        }
-        else {
-
-        try {
-            // Generate a unique 5-digit patient ID
-            Random random = new Random();
-            patientID = 10000 + random.nextInt(90000);
-
-            patientIds.add(patientID);
-
-            a = new Patient();
-            patientList.add(a);
-            a.setpatientName(firstName);
-            a.setID(patientID);
-
-            String fileName = patientID + "_PatientInfo.txt";
-            FileWriter fileWriter = new FileWriter(fileName);
-            fileWriter.write("Patient ID: " + patientID + "\n");
-            fileWriter.write("First Name: " + firstName + "\n");
-            fileWriter.write("Last Name: " + lastName + "\n");
-            fileWriter.write("Address: " + address + "\n");
-            fileWriter.write("Phone Number: " + phone + "\n");
-            if (datePicker.getValue() != null) {
-      
-                fileWriter.write("Date of Appointment: " + day + "/" + month + "/" + year + "\n");
-            }
-            fileWriter.write("Insurance ID: " + insur + "\n");
-
-            fileWriter.close();
-
-            successLabel.setText("Success: Patient information saved successfully. Patient ID: " + patientID);
-        } catch (IOException e) {
-            System.out.println("Error: An error occurred while saving patient information.");
-        }
-        }
+    private void showAlert(Alert.AlertType alertType, String title, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
-    public static ArrayList<Patient> getArrayList() {
+
+	private String generatePatientID() {
+		String a = firstNameTextField.getText().substring(0, 3);
+		String b = a +  lastNameTextField.getText().substring(0, 3);
+		String c = b + birthDayField.getText().substring(0, 2);
+		patiendIDs.add(c);
+		return c;
+    }
+
+	private void savePatientData(String patientId, String firstName, String lastName, String bday, String phone, String healthHistory, String insuranceID, String pharmacy) {
+	    if (patientId.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || bday.isEmpty() || phone.isEmpty() || healthHistory.isEmpty() || insuranceID.isEmpty() || pharmacy.isEmpty()) {
+	        showAlert(Alert.AlertType.ERROR, "Error", "All fields must be filled out.");
+	    } else {
+	        try (BufferedWriter writer = new BufferedWriter(new FileWriter(patientId + "_PatientInfo.txt"))) {
+	            writer.write("Patient ID: " + patientId + "\n");
+	            writer.write("First Name: " + firstName + "\n");
+	            writer.write("Last Name: " + lastName + "\n");
+	            writer.write("Email: " + bday + "\n");
+	            writer.write("Phone: " + phone + "\n");
+	            writer.write("Health History: " + healthHistory + "\n");
+	            writer.write("Insurance ID: " + insuranceID + "\n");
+	            writer.write("Pharmacy: " + pharmacy + "\n");
+
+	            
+	            
+	        } catch (IOException ex) {
+	            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while saving the data.");
+	            ex.printStackTrace();
+	        }
+	
+
+	        if(b!=0) {
+	        try(BufferedWriter writer = new BufferedWriter(new FileWriter(patientId + "_immunization.txt"))) {
+	        	
+	        	writer.write("Immunization Record:\n");
+	        } catch (IOException e) {
+				e.printStackTrace();
+			}
+	        
+             try(BufferedWriter writer = new BufferedWriter(new FileWriter(patientId + "_prescriptions.txt"))) {
+	        	
+	        	writer.write("Prescriptions:\n");
+	        } catch (IOException e) {
+				e.printStackTrace();
+			}
+	        
+	    }
+	    }
+	   
+        patientList.add(a);
+        a.setFirstName(firstName);
+        a.setID(patientId);
+        a.setLastName(lastName);
+        a.setBirthDay(bday);
+        a.setHealthHistory(healthHistory);
+        a.setInsuranceID(insuranceID);
+        a.setPharmacy(pharmacy);
+        a.setPhoneNumber(phone);
+	}
+
+	public static ArrayList<Patient> getArrayList() {
         return patientList;
     }
-
-    public static ArrayList<Integer> getArrayListofIDS() {
-        return patientIds;
+    
+	 public static ArrayList<String> getArrayListofIDS() {
+	        return patiendIDs;
+	    }
+    public static void main(String[] args) {
+        launch(args);
     }
 
-    private void clearFields() {
-        nameTextField.clear();
-        lastNameTextField.clear();
-        addressTextField.clear();
-        phoneTextField.clear();
-        insuranceIdTextField.clear();
-        datePicker.setValue(null);
-        successLabel.setText("");
-    }
-    private boolean areFieldsEmpty() {
-        return nameTextField.getText().trim().isEmpty() ||
-               lastNameTextField.getText().trim().isEmpty() ||
-               addressTextField.getText().trim().isEmpty() ||
-               phoneTextField.getText().trim().isEmpty() ||
-               insuranceIdTextField.getText().trim().isEmpty() ||
-               datePicker.getValue() == null;
-    }
+	@Override
+	public void start(Stage arg0) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }

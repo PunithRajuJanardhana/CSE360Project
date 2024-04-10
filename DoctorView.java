@@ -1,6 +1,6 @@
-package asuHelloWorldJavaFX;
-import java.util.List;
+package HW1;
 
+import java.util.List;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -15,6 +15,7 @@ public class DoctorView extends Application {
     private TextField patientIdField;
     private Button sendButton;
     private Button submitButton; // Added submit button
+    private Button backButton; // Added back button
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -27,12 +28,16 @@ public class DoctorView extends Application {
         Label patientIdLabel = new Label("Patient ID:");
         patientIdField = new TextField();
         patientIdField.setPromptText("Enter Patient ID Here");
-        
+
         // Submit button
         submitButton = new Button("Submit");
         submitButton.setOnAction(e -> displayMessages());
-        
-        HBox patientIdBox = new HBox(10, patientIdLabel, patientIdField, submitButton);
+
+        // back button
+        backButton = new Button("Back");
+        backButton.setOnAction(e -> goBack());
+
+        HBox patientIdBox = new HBox(10, patientIdLabel, patientIdField, submitButton, backButton);
 
         // Messaging interface
         Label messagesLabel = new Label("Messages:");
@@ -74,5 +79,11 @@ public class DoctorView extends Application {
             displayMessages();
             messageTextField.clear();
         }
+    }
+
+    private void goBack() {
+        // Code to navigate back to previous screen
+        Stage stage = (Stage) backButton.getScene().getWindow();
+        stage.close();
     }
 }
